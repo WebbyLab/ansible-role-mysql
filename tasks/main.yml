@@ -1,0 +1,22 @@
+---
+- name: Install MySQL package
+  apt: name=mysql-server state=present update_cache=yes
+
+- name: Install python-mysqldb absible mysql remote management
+  apt: name=python-mysqldb state=present
+
+- name: Create Mysql configuration file
+  template: src=utf8.conf dest=/etc/mysql/conf.d/utf8.conf
+
+- name: Start Mysql Service
+  service: name=mysql state=restarted enabled=true
+
+- name: Add mysql users
+  mysql_user:
+    name: "{{item.name}}"
+    password: "{{item.password}}"
+    priv: "{{item.db}}.*:ALL"
+    state: present
+    host: "{{item.host | default('localhost')}}"
+  with_items: mysql_users
+  when: mysql_users|length > 0
