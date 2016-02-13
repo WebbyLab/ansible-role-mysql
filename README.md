@@ -13,7 +13,7 @@ Example Playbook
 
     - hosts: servers
       roles:
-         - role: webbylab.mysql
+         - role: WebbyLab.mysql
            mysql_users: [{name: 'user', password: 'password', db: 'mydb', host: 'localhost'}]
 
 License
